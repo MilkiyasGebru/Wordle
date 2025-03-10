@@ -1,7 +1,5 @@
 "use client"
 
-import Image from "next/image";
-import Word from "@/Components/Word";
 import {useRef, useState, useEffect} from "react";
 import Line from "@/Components/Line";
 
@@ -17,13 +15,12 @@ export default function Home() {
             console.log(words[tries], " Checking")
             for (let i=0; i<5;i++){
                 console.log(words[tries][i], "Hi");
-                if (words[tries][i] == "" || words[tries][i] == ""){
+                if (words[tries][i] === "" || words[tries][i] === ""){
                     return
                 }
 
             }
             setTries(tries+1)
-            // e.target.value = " ";
             setInputValue("")
         }
     }
