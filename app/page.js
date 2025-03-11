@@ -2,53 +2,91 @@
 
 import {useRef, useState, useEffect} from "react";
 import Line from "@/Components/Line";
+import deepCopyMatrix from "@/utils/deepCopyMatrix";
 
 export default function Home() {
 
     const [tries, setTries] = useState(0);
     const inputRef = useRef(null);
-    const [words, setWords] = useState(Array.from({length:5},()=>Array(5).fill(" ")));
+    const [words, setWords] = useState(Array.from({length:5},()=>Array(5).fill({color:"gray",character:" "})));
     const [inputValue, setInputValue] = useState("");
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (tries < 5 ){
-            console.log(words[tries], " Checking")
             for (let i=0; i<5;i++){
                 console.log(words[tries][i], "Hi");
-                if (words[tries][i] === "" || words[tries][i] === ""){
+                if (words[tries][i].character === " " || words[tries][i].character === ""){
                     return
                 }
 
             }
+
+            const word_of_day = "OCEAN"
+            const testCounts = {}
+            for (let word of words[tries]){
+                testCounts[word.character] = (testCounts[word.character] || 0) + 1;
+            }
+
+            const charCounts = {}
+            for (let char of word_of_day){
+                charCounts[char] = (charCounts[char] || 0) + 1;
+            }
+
+            const updatedWords = deepCopyMatrix(words)
+
+            for (let i = 0; i < 5; i++) {
+                if (updatedWords[tries][i].character === word_of_day[i]){
+                    charCounts[updatedWords[tries][i].character] -= 1
+                    testCounts[updatedWords[tries][i].character] -= 1
+                    updatedWords[tries][i].color="green"
+                }
+            }
+
+
+            for (let i = 0; i < 5; i++) {
+
+                if (updatedWords[tries][i].character !== word_of_day[i] && charCounts[updatedWords[tries][i].character] > 0){
+                    updatedWords[tries][i].color="gold"
+                    charCounts[updatedWords[tries][i].character] -= 1
+                }
+            }
+
+
+
+            setWords(updatedWords)
             setTries(tries+1)
             setInputValue("")
         }
     }
 
     useEffect(() => {
-        inputRef.current.focus();
+        if (inputRef.current) {
+
+            inputRef.current.focus();
+        }
     },[])
 
     const handleChange = (e)=>{
-
+        console.log("It is changing")
         if (tries < 5 ){
 
-            const updatedArray = [...words]
+            const updatedWords = deepCopyMatrix(words)
 
             for (let i=0; i < 5; i++){
                 if (e.target.value.length > i ) {
-                    console.log(updatedArray[tries], " new array")
-                    updatedArray[tries][i] = e.target.value[i]
+                    console.log(updatedWords[tries], " new array")
+                    updatedWords[tries][i].character = e.target.value[i]
                 }
                 else{
-                    updatedArray[tries][i] = ""
+                    updatedWords[tries][i].character = ""
                 }
 
 
             }
-            e.target.value = updatedArray[tries].join("")
-            setInputValue(updatedArray[tries].join(""))
-            setWords(updatedArray);
+            setInputValue(e.target.value.slice(0,5))
+            setWords(updatedWords);
 
         }
 
@@ -61,8 +99,8 @@ export default function Home() {
                 <Line key={index} word={words[index]} tries={tries} current={index}/>
             ))}
 
-            <form onSubmit={handleSubmit} className="">
-                <input className="bg-red-300 w-4 h-4" ref={inputRef} onSubmit={handleSubmit} onChange={handleChange} value={inputValue}/>
+            <form onSubmit={handleSubmit} >
+                <input  className="opacity-0 bg-red-300 w-4 h-4" ref={inputRef}  onChange={handleChange} value={inputValue}/>
             </form>
 
 

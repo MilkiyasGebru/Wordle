@@ -5,10 +5,9 @@ export default function Word({current, tries, character, color, index}){
 
     console.log(index)
     return (
-        <div style={{ transitionDelay: `${300 * (index + 1)}ms` }} className={`border  p-4 w-full h-16 flex items-center justify-center  
+        <div style={{ transitionDelay: `${50 * (index + 1)}ms` }} className={`border  p-4 w-full h-16 flex items-center justify-center  
            transition-colors
-           duration-300
-            ease-in-out
+           
            ${ (color === "green" && tries > current) ? 'bg-green-500':''}
             
             ${ (color === "gold" && tries > current) ? 'bg-yellow-500':''}
