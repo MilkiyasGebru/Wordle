@@ -24,10 +24,7 @@ export default function Home() {
             }
 
             const word_of_day = "OCEAN"
-            const testCounts = {}
-            for (let word of words[tries]){
-                testCounts[word.character] = (testCounts[word.character] || 0) + 1;
-            }
+
 
             const charCounts = {}
             for (let char of word_of_day){
@@ -39,7 +36,6 @@ export default function Home() {
             for (let i = 0; i < 5; i++) {
                 if (updatedWords[tries][i].character === word_of_day[i]){
                     charCounts[updatedWords[tries][i].character] -= 1
-                    testCounts[updatedWords[tries][i].character] -= 1
                     updatedWords[tries][i].color="green"
                 }
             }
