@@ -91,14 +91,13 @@ export default function Home() {
     return (
         <div className="flex flex-col justify-center items-center w-full mx-auto mt-16 gap-4">
 
-            {Array.from({length:5}, (_, index)=>(
-                <Line key={index} word={words[index]} tries={tries} current={index}/>
-            ))}
+            {words.map((word,index) => (
+                <Line key={index} word={word} current={index} tries={tries}/>
+            ) )}
 
             <form onSubmit={handleSubmit} >
                 <input  className="opacity-0 bg-red-300 w-4 h-4" ref={inputRef}  onChange={handleChange} value={inputValue}/>
             </form>
-
 
         </div>
 
