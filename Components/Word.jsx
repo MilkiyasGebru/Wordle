@@ -1,9 +1,6 @@
-"use client"
-import {useEffect, useState} from "react";
 
 export default function Word({current, tries, character, color, index}){
 
-    console.log(index)
     return (
         <div style={{ transitionDelay: `${150 * (index + 1)}ms` }} className={`border  p-4 w-full h-16 flex items-center justify-center  
            transition-colors
